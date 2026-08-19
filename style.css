@@ -258,14 +258,15 @@ img {
 }
 
 .post-columns {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(68px, 11vw, 135px);
+  column-count: 2;
+  column-gap: clamp(68px, 11vw, 135px);
   padding: 0 26px 120px;
 }
 
 .post-columns article {
   min-width: 0;
+  display: block;
+  break-inside: avoid;
 }
 
 .post-columns h2 {
@@ -275,15 +276,17 @@ img {
   font-weight: 400;
   line-height: 1.38;
   letter-spacing: -0.025em;
+  column-span: all;
 }
 
 .post-columns p {
-  margin: 0;
+  margin: 0 0 1.2em;
   color: var(--text);
   font-size: clamp(1rem, 1.8vw, 1.19rem);
   line-height: 1.72;
   text-align: justify;
   text-justify: inter-word;
+  break-inside: avoid;
 }
 
 .post-nav {
@@ -334,9 +337,12 @@ img {
   }
 
   .post-card,
-  .post-hero,
-  .post-columns {
+  .post-hero {
     grid-template-columns: 1fr;
+  }
+
+  .post-columns {
+    column-count: 1;
   }
 
   .post-card {
@@ -407,4 +413,96 @@ img {
   .post-columns h2 {
     font-size: 2.35rem;
   }
+}
+/* =========================
+   REFLEXÃO DO POST
+========================= */
+
+.reflection-section {
+  margin-top: 90px;
+  margin-bottom: 100px;
+}
+
+
+/* TÍTULO */
+
+.reflection-section h2 {
+  font-family: "Playfair Display", serif;
+
+  font-size: clamp(42px, 5vw, 62px);
+  font-weight: 400;
+
+  line-height: 1.15;
+
+  color: #59372c;
+
+  margin: 0 0 45px 0;
+}
+
+
+/* DUAS COLUNAS */
+
+.reflection-columns {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 70px;
+
+  align-items: start;
+}
+
+
+/* TEXTO */
+
+.reflection-column p {
+  font-family: "DM Sans", sans-serif;
+
+  font-size: 18px;
+  font-weight: 300;
+
+  line-height: 1.8;
+
+  color: #6d6461;
+
+  margin: 0 0 24px 0;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+  .reflection-section {
+    margin-top: 60px;
+    margin-bottom: 70px;
+  }
+
+
+  .reflection-section h2 {
+    font-size: 38px;
+
+    margin-bottom: 30px;
+  }
+
+
+  .reflection-columns {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+
+  .reflection-column p {
+    font-size: 16px;
+
+    line-height: 1.75;
+
+    margin-bottom: 20px;
+  }
+
 }
