@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Como a GPU transforma vértices em pixels, o que são vertex e fragment shaders e como funciona o modelo de iluminação de Phong." />
+  <title>Post #007 | On The Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body class="post-page post-long">
+  <header class="site-header">
+    <a class="brand" href="../index.html">ON THE BLOG</a>
+    <span class="course">#007</span>
+  </header>
+
+  <main class="site-main post-main">
+    <section class="post-hero" aria-labelledby="post-title">
+      <figure class="post-illustration">
+        <img src="../images/post-007.png" alt="Ilustração de dois gatinhos, um preto e um branco, deitados sobre notebooks" />
+      </figure>
+
+      <div class="post-title-wrap">
+        <p class="post-kicker">o</p>
+        <h1 id="post-title">PIPE<br />LINE</h1>
+        <p class="post-subtitle">Do triângulo ao pixel: pipeline gráfica e shaders</p>
+      </div>
+    </section>
+
+    <section class="post-columns" aria-label="Conteúdo do post">
+      <article>
+        <h2>Do modelo 3D à tela</h2>
+<p>Até aqui, os conteúdos eram sobre processar imagens que já existem. Na parte de computação gráfica, o caminho é o inverso: <strong>gerar</strong> uma imagem a partir de uma descrição da cena. A pipeline gráfica é a sequência de etapas que faz isso:</p>
+<ul>
+<li>os vértices passam pelo <strong>vertex shader</strong>, que aplica as transformações de modelo, visão e projeção;</li>
+<li>os vértices são montados em primitivas (triângulos) e o que está fora da câmera é recortado;</li>
+<li>a <strong>rasterização</strong> descobre quais pixels cada triângulo cobre;</li>
+<li>o <strong>fragment shader</strong> calcula a cor de cada fragmento;</li>
+<li>testes de profundidade e mistura (blending) decidem o que vai para o framebuffer.</li>
+</ul>
+      </article>
+
+      <article>
+        <h2>O que são shaders?</h2>
+<p>Shaders são pequenos programas que rodam na GPU, executados em paralelo para milhares de vértices ou pixels ao mesmo tempo. Eles são escritos em linguagens como GLSL. Um fragment shader bem simples, com iluminação difusa, fica assim:</p>
+<pre><code>uniform vec3 luzDir;
+varying vec3 normal;
+
+void main() {
+  float d = max(dot(normalize(normal), normalize(luzDir)), 0.0);
+  vec3 cor = vec3(0.95, 0.6, 0.7) * (0.2 + 0.8 * d);
+  gl_FragColor = vec4(cor, 1.0);
+}</code></pre>
+      </article>
+
+      <article>
+        <h2>Iluminação</h2>
+<p>O modelo de <strong>Phong</strong> calcula a luz em um ponto somando três componentes:</p>
+<ul>
+<li><strong>ambiente:</strong> uma luz constante, para nada ficar totalmente preto;</li>
+<li><strong>difusa:</strong> proporcional a N · L (a lei de Lambert), depende do ângulo entre a normal da superfície e a direção da luz;</li>
+<li><strong>especular:</strong> proporcional a (R · V)<sup>n</sup>, gera o brilho que muda conforme a posição do observador.</li>
+</ul>
+<p>Também vimos a diferença entre calcular a luz por vértice e interpolar a cor (Gouraud) e interpolar a normal e calcular a luz por pixel (Phong shading), que deixa o brilho muito mais suave.</p>
+      </article>
+
+      <article>
+        <h2>A ponte entre as duas metades</h2>
+<p>O que achei mais interessante foi perceber que as duas partes da disciplina se encontram. Um fragment shader é, no fundo, uma função aplicada a cada pixel, igual às transformações de intensidade e aos filtros que estudamos antes.</p>
+<p>Muitos efeitos de jogos e aplicativos, como desfoque, brilho e contornos estilizados, são exatamente uma máscara de convolução ou um detector de bordas rodando dentro de um shader. E a interpolação do post #002 volta aqui também: é ela que a rasterização usa para distribuir cores e normais pelo triângulo.</p>
+      </article>
+    </section>
+
+    <nav class="post-nav" aria-label="Navegação entre posts">
+      <a href="post-006.html">← Post #006</a>
+      <span>Post #007 · Pipeline e shaders</span>
+      <a href="post-008.html">Post #008 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <span>Computação Visual</span>
+    <span>On The Blog · 2026</span>
+  </footer>
+</body>
+</html>

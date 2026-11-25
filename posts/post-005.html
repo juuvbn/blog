@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Derivadas, gradiente, operador de Sobel e o algoritmo de Canny: como o computador descobre onde um objeto termina." />
+  <title>Post #005 | On The Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body class="post-page post-long">
+  <header class="site-header">
+    <a class="brand" href="../index.html">ON THE BLOG</a>
+    <span class="course">#005</span>
+  </header>
+
+  <main class="site-main post-main">
+    <section class="post-hero" aria-labelledby="post-title">
+      <figure class="post-illustration">
+        <img src="../images/post-005.png" alt="Ilustração de um gatinho cinza dormindo em frente a um computador antigo, ao lado de uma xícara" />
+      </figure>
+
+      <div class="post-title-wrap">
+        <p class="post-kicker">nas</p>
+        <h1 id="post-title">BORDAS</h1>
+        <p class="post-subtitle">Encontrando bordas em uma imagem</p>
+      </div>
+    </section>
+
+    <section class="post-columns" aria-label="Conteúdo do post">
+      <article>
+        <h2>O que é uma borda?</h2>
+<p>Uma borda é um lugar da imagem onde a intensidade muda bruscamente, como o contorno de um objeto contra o fundo. Para encontrar essas mudanças, usamos <strong>derivadas</strong>.</p>
+<p>Na primeira derivada, uma borda aparece como um pico. Na segunda derivada, ela aparece como um cruzamento por zero (o valor passa de positivo para negativo). Como a imagem é discreta, as derivadas viram diferenças entre pixels vizinhos, implementadas com máscaras, assim como na filtragem espacial.</p>
+      </article>
+
+      <article>
+        <h2>Gradiente e Sobel</h2>
+<p>O gradiente indica a direção e a intensidade da maior variação. O operador de <strong>Sobel</strong> estima as derivadas horizontal e vertical com duas máscaras:</p>
+<pre><code>Gx = | -1 0 1 |     Gy = | -1 -2 -1 |
+     | -2 0 2 |          |  0  0  0 |
+     | -1 0 1 |          |  1  2  1 |</code></pre>
+<p>A magnitude da borda é <em>√(Gx² + Gy²)</em> e a direção é <em>atan2(Gy, Gx)</em>. Prewitt e Roberts seguem a mesma ideia, com pesos diferentes.</p>
+      </article>
+
+      <article>
+        <h2>O problema do ruído</h2>
+<p>Derivadas são muito sensíveis a ruído: qualquer pixel fora do lugar vira uma "borda". Por isso, normalmente a imagem é suavizada antes. O filtro <strong>LoG</strong> (Laplaciano do Gaussiano) junta as duas etapas: primeiro aplica o gaussiano e depois o Laplaciano, procurando os cruzamentos por zero.</p>
+<p>Isso mostrou como os conteúdos da disciplina se conectam: a suavização do post anterior é um passo essencial aqui.</p>
+      </article>
+
+      <article>
+        <h2>O detector de Canny</h2>
+<p>O algoritmo de <strong>Canny</strong> é considerado um dos melhores detectores de borda e combina várias etapas:</p>
+<ul>
+<li>suavização com filtro gaussiano;</li>
+<li>cálculo da magnitude e direção do gradiente;</li>
+<li>supressão de não máximos, que afina as bordas para 1 pixel de largura;</li>
+<li>limiarização dupla com histerese, que mantém bordas fortes e só aceita as fracas se estiverem conectadas a uma forte.</li>
+</ul>
+<p>Detecção de bordas está por trás de leitores de documentos, reconhecimento de objetos e carros autônomos que identificam faixas na pista.</p>
+      </article>
+    </section>
+
+    <nav class="post-nav" aria-label="Navegação entre posts">
+      <a href="post-004.html">← Post #004</a>
+      <span>Post #005 · Detecção de bordas</span>
+      <a href="post-006.html">Post #006 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <span>Computação Visual</span>
+    <span>On The Blog · 2026</span>
+  </footer>
+</body>
+</html>

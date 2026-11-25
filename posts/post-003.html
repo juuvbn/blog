@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Como um simples gráfico de barras revela o contraste de uma imagem, e como funções como negativo, log e gama mudam o seu brilho." />
+  <title>Post #003 | On The Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body class="post-page post-long">
+  <header class="site-header">
+    <a class="brand" href="../index.html">ON THE BLOG</a>
+    <span class="course">#003</span>
+  </header>
+
+  <main class="site-main post-main">
+    <section class="post-hero" aria-labelledby="post-title">
+      <figure class="post-illustration">
+        <img src="../images/post-003.png" alt="Foto de um gatinho olhando atentamente para a tela de um notebook" style="object-position: 72% center" />
+      </figure>
+
+      <div class="post-title-wrap">
+        <p class="post-kicker">o</p>
+        <h1 id="post-title">HISTO<br />GRAMA</h1>
+        <p class="post-subtitle">Histograma e transformações de intensidade</p>
+      </div>
+    </section>
+
+    <section class="post-columns" aria-label="Conteúdo do post">
+      <article>
+        <h2>O que um histograma mostra?</h2>
+<p>O histograma conta quantos pixels existem para cada nível de intensidade: <em>h(r<sub>k</sub>) = n<sub>k</sub></em>. Quando dividimos pelo total de pixels (M·N), temos o histograma normalizado, que funciona como uma estimativa da probabilidade de cada intensidade aparecer.</p>
+<p>Só de olhar o gráfico já dá para "ler" a imagem: se as barras estão concentradas à esquerda, ela é escura; à direita, clara; e se estão todas espremidas no meio, a imagem tem baixo contraste.</p>
+      </article>
+
+      <article>
+        <h2>Transformações de intensidade</h2>
+<p>As transformações de intensidade aplicam uma função <em>s = T(r)</em> em cada pixel, sem olhar para os vizinhos. As principais que vimos foram:</p>
+<ul>
+<li><strong>Negativo:</strong> s = (L − 1) − r. Inverte claro e escuro, útil para enxergar detalhes em regiões escuras, como em exames médicos.</li>
+<li><strong>Logarítmica:</strong> s = c · log(1 + r). Expande os tons escuros e comprime os claros.</li>
+<li><strong>Potência (gama):</strong> s = c · r<sup>γ</sup>. Com γ &lt; 1 a imagem clareia; com γ &gt; 1 ela escurece. É a base da correção gama de monitores.</li>
+</ul>
+      </article>
+
+      <article>
+        <h2>Equalização de histograma</h2>
+<p>A equalização tenta espalhar as intensidades por toda a faixa disponível de forma automática. Ela usa a função de distribuição acumulada: cada nível r<sub>k</sub> é mapeado para <em>s<sub>k</sub> = (L − 1) · Σ p(r<sub>j</sub>)</em>, somando as probabilidades de todos os níveis até k.</p>
+<p>O resultado costuma ter muito mais contraste. Mas aprendi que nem sempre é a melhor escolha: em algumas imagens ela exagera o ruído ou deixa a aparência artificial.</p>
+      </article>
+
+      <article>
+        <h2>Na prática</h2>
+<p>Depois dessa aula, os ajustes de brilho, contraste e "curvas" dos aplicativos de edição de foto deixaram de ser mágicos. Eles são exatamente essas funções aplicadas pixel a pixel:</p>
+<pre><code>negativo = 255 - img
+gama     = 255 * (img / 255) ** 0.5   # clareia
+log      = 255 / np.log(256) * np.log1p(img)</code></pre>
+<p>Ver o histograma mudando junto com a imagem ajudou muito a entender o efeito de cada transformação.</p>
+      </article>
+    </section>
+
+    <nav class="post-nav" aria-label="Navegação entre posts">
+      <a href="post-002.html">← Post #002</a>
+      <span>Post #003 · Histograma</span>
+      <a href="post-004.html">Post #004 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <span>Computação Visual</span>
+    <span>On The Blog · 2026</span>
+  </footer>
+</body>
+</html>

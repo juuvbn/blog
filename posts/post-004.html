@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Máscaras, convolução, suavização com média e gaussiano, filtro de mediana e aguçamento de imagens." />
+  <title>Post #004 | On The Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body class="post-page post-long">
+  <header class="site-header">
+    <a class="brand" href="../index.html">ON THE BLOG</a>
+    <span class="course">#004</span>
+  </header>
+
+  <main class="site-main post-main">
+    <section class="post-hero" aria-labelledby="post-title">
+      <figure class="post-illustration">
+        <img src="../images/post-004.png" alt="Ilustração de um gatinho laranja e branco digitando em um notebook" />
+      </figure>
+
+      <div class="post-title-wrap">
+        <p class="post-kicker">o</p>
+        <h1 id="post-title">FILTRO</h1>
+        <p class="post-subtitle">Filtragem espacial: quando o pixel olha para os vizinhos</p>
+      </div>
+    </section>
+
+    <section class="post-columns" aria-label="Conteúdo do post">
+      <article>
+        <h2>Como funciona um filtro espacial?</h2>
+<p>Diferente das transformações de intensidade, na filtragem espacial o novo valor de um pixel depende também da sua <strong>vizinhança</strong>. Usamos uma pequena matriz, chamada máscara ou kernel (geralmente 3×3), que percorre a imagem. Em cada posição, multiplicamos os pesos da máscara pelos pixels embaixo dela e somamos tudo.</p>
+<p>Essa operação é a correlação; a convolução é igual, mas com a máscara rotacionada em 180°. Nas bordas da imagem, onde a máscara "sai" da matriz, é preciso decidir como preencher os valores que faltam (com zeros, repetindo a borda, espelhando...).</p>
+      </article>
+
+      <article>
+        <h2>Suavização</h2>
+<p>Os filtros de suavização servem para borrar a imagem e reduzir ruído. O mais simples é o filtro da média, em que todos os pesos são iguais:</p>
+<pre><code>        | 1 1 1 |
+1/9  ×  | 1 1 1 |
+        | 1 1 1 |</code></pre>
+<p>O filtro <strong>gaussiano</strong> dá pesos maiores ao centro e menores às pontas, então borra de um jeito mais natural. Quanto maior a máscara (ou o desvio padrão), mais forte o desfoque.</p>
+      </article>
+
+      <article>
+        <h2>Filtros não lineares</h2>
+<p>O filtro de <strong>mediana</strong> não faz uma soma ponderada: ele ordena os valores da vizinhança e escolhe o do meio. Ele é muito eficiente contra o ruído "sal e pimenta" (pontinhos pretos e brancos espalhados), porque esses valores extremos ficam nas pontas da lista e são descartados.</p>
+<p>Outra vantagem é que ele preserva melhor as bordas do que a média, que acaba borrando tudo por igual.</p>
+      </article>
+
+      <article>
+        <h2>Aguçamento</h2>
+<p>Se a suavização funciona como uma média (uma espécie de integral), o aguçamento usa derivadas para realçar as transições. O Laplaciano, por exemplo, destaca regiões onde a intensidade muda rápido.</p>
+<p>Uma técnica que achei bem engenhosa é a <strong>máscara de nitidez</strong> (unsharp masking): borramos a imagem, subtraímos o resultado da original para obter só os detalhes, e somamos esses detalhes de volta: <em>g = f + k · (f − f<sub>borrada</sub>)</em>. Esse assunto leva direto ao próximo tema: a detecção de bordas.</p>
+      </article>
+    </section>
+
+    <nav class="post-nav" aria-label="Navegação entre posts">
+      <a href="post-003.html">← Post #003</a>
+      <span>Post #004 · Filtragem espacial</span>
+      <a href="post-005.html">Post #005 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <span>Computação Visual</span>
+    <span>On The Blog · 2026</span>
+  </footer>
+</body>
+</html>
